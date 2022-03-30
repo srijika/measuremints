@@ -24,9 +24,7 @@ module.exports = {
     Sub_Category: require('../models/sub_categories'),
     Attribute: require('../models/attributes'),
     Mint: require('../models/mints'),
-
-
-
-
+    Calendar_Event: require('../models/calendar_events'),
+    
 
 };
