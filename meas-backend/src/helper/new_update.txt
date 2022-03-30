@@ -1,0 +1,18 @@
+sudo ssh measuremints@161.97.157.111
+
+Live Password = 
+measuremints
+    E8sd3FTlia
+
+path
+/home/measuremints/web/measuremints.plenumnetworks.com/public_html
+cd web/measuremints.plenumnetworks.com/public_html
+
+
+
+
+
+
+
+
+

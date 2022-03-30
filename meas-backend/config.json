@@ -1,0 +1,6 @@
+{
+    "db_uri":"mongodb://localhost/martfury",
+    "jwd_secret":"ilovedeventmentfieldandmyworldall",
+    "ROLES":["USER","SUPERADMIN","ADMIN"]
+} 
+
