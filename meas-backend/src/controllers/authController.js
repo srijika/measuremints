@@ -1649,13 +1649,14 @@ module.exports = {
                     isEmailVerified: 1,
                     firebase_token: 1,
                     username: 1,
-                    'userData': {
-                        $cond: {
-                            if: { $eq: ["$user_status", "deactive"] },
-                            then: "deactive",
-                            else: "active"
-                        }
+                    userData : 1,
+                    'isConnected': {
+                       $size : '$userData'
                     },
+
+
+
+                    
                 
                 }
             },
