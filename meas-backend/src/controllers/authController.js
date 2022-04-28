@@ -1591,16 +1591,16 @@ module.exports = {
 
 
 
-        const myFriends = await Mint_Requests.find({
-            $or: [{
-                sender_id: user_id
-            }, {
-                reciever_id: user_id
-            }],
-            $and: [{
-                accept_status: true
-            }]
-        }).lean().exec();
+        // const myFriends = await Mint_Requests.find({
+        //     $or: [{
+        //         sender_id: user_id
+        //     }, {
+        //         reciever_id: user_id
+        //     }],
+        //     $and: [{
+        //         accept_status: true
+        //     }]
+        // }).lean().exec();
 
         const UserList = await UserLogins.aggregate([
             {
@@ -1616,28 +1616,46 @@ module.exports = {
                   let: {
                     id: "$_id", //All UserLogins variables,
                   },
-      
                   pipeline: [
                     {
                       $match: {
-                        $expr: {
-                          $and: [
-                            { $ne: ["$status", "PAYMENT_FAILED"] },
-
-                            {
-                              $eq: [
-                                "$$id", //localField variable it can be used only in $expr
-                                "$trip_id", //foreignField
-                              ],
-                            },
-                          ],
-                        },
+                        $expr: [{
+                            $or: [{
+                                sender_id: "$$id"
+                            }, {
+                                reciever_id: "$$id"
+                            }]},{
+                            $and: {
+                                accept_status: true
+                            }
+                        }],
                       },
                     },
                   ],
                   as: "userData",
                 },
               },
+              {
+                $project: {
+                    username: 1,
+                    email: 1,
+                    mobile_number: 1,
+                    roles: 1,
+                    avatar: 1,
+                    dob: 1,
+                    isEmailVerified: 1,
+                    firebase_token: 1,
+                    username: 1,
+                    userData : 1,
+                    'isConnected': {
+                        $cond: {
+                            if: {
+                                $gt : [{ $size : '$userData'},0]
+                            },then: "true", else: "false"
+                        }
+                    }
+                }
+            },
       
     ]);
 
