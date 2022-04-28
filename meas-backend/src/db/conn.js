@@ -26,7 +26,6 @@ module.exports = {
     Mint: require('../models/mints'),
     Calendar_Event: require('../models/calendar_events'),
     Favorite: require('../models/favorites'),
-
-    
+    Mint_Requests: require('../models/mint_requests'),
 
 };
