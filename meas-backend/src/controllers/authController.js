@@ -1590,6 +1590,18 @@ module.exports = {
         }
 
 
+
+        const myFriends = await Mint_Requests.find({
+            $or: [{
+                sender_id: user_id
+            }, {
+                reciever_id: user_id
+            }],
+            $and: [{
+                accept_status: true
+            }]
+        }).lean().exec();
+
         const UserList = await UserLogins.aggregate([
             {
                 $match: {
@@ -1597,6 +1609,34 @@ module.exports = {
                     roles : {$ne : 'ADMIN'}
 
                 }
+              },
+              {
+                $lookup: {
+                  from: "mint_requests",
+                  let: {
+                    id: "$_id", //All UserLogins variables,
+                  },
+      
+                  pipeline: [
+                    {
+                      $match: {
+                        $expr: {
+                          $and: [
+                            { $ne: ["$status", "PAYMENT_FAILED"] },
+
+                            {
+                              $eq: [
+                                "$$id", //localField variable it can be used only in $expr
+                                "$trip_id", //foreignField
+                              ],
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  ],
+                  as: "userData",
+                },
               },
       
     ]);

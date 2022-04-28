@@ -253,7 +253,7 @@ module.exports = {
         }
     },
 
-    myAllMints: async (req, res, next) => {
+    myAllMintsFriend: async (req, res, next) => {
 
         try {
 

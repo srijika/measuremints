@@ -11,6 +11,6 @@ router.use(cors());
   router.post('/api/send-mint-request',authenticateJWT, mintRequestController.sendMintRequest);
   router.post('/api/accept-mint-request',authenticateJWT,mintRequestController.acceptMintRequest);
   router.post('/api/get-all-mint-request',authenticateJWT,mintRequestController.getAllMintRequests);
-  router.post('/api/my-all-mints',authenticateJWT,mintRequestController.myAllMints);
+  router.post('/api/my-all-mints/friends',authenticateJWT,mintRequestController.myAllMintsFriend);
 
 module.exports = router;
