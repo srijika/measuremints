@@ -23,6 +23,8 @@ router.get('/api/resetPasswordView/mobile', authCtrl.recoverpasswordmobileview);
 router.post('/api/recoverPassword/mobile', authCtrl.recoverpasswordfrommobile);
 router.post('/api/verify/otp', authCtrl.verifyOtp)
 router.post('/api/forgetpassword', authCtrl.forgotpassword);
+router.post('/api/get-all/users', authCtrl.getAllUser);
+
 
 
 

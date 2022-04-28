@@ -1578,15 +1578,42 @@ module.exports = {
     },
 
 
+
+
+    getAllUser: async(req, res, next) => {
+        try{
+        const { user_id } = req.body;
+
+        if (!user_id) {
+            res.send({ status: 400, message: "Required Parameter is missing" });
+            return;
+        }
+
+
+        const UserList = await UserLogins.aggregate([
+            {
+                $match: {
+                    _id:{$ne : mongoose.Types.ObjectId(user_id) },
+                    roles : {$ne : 'ADMIN'}
+
+                }
+              },
+      
+    ]);
+
+console.log(UserList.length)
+
+    res.send({ status: 200, UserList : UserList, message: `Get User List Successfully` })
+
+
+}catch(error){
+    res.send({status: 400, message: error.message})
+    return;
+}
+
+    },
+
+
 }
 
 
-// function generateOTP() {
-
-//     var digits = '0123456789';
-//     let OTP = '';
-//     for (let i = 0; i < 6; i++) {
-//         OTP += digits[Math.floor(Math.random() * 10)];
-//     }
-//     return OTP;
-// }

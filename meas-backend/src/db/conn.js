@@ -25,6 +25,8 @@ module.exports = {
     Attribute: require('../models/attributes'),
     Mint: require('../models/mints'),
     Calendar_Event: require('../models/calendar_events'),
+    Favorite: require('../models/favorites'),
+
     
 
 };

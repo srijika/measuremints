@@ -7,6 +7,8 @@ const rootRouter = express.Router()
 const user_auth = require('./user/auth');
 const mint = require('./user/mint');
 const calendar_event = require('./user/calendar_event');
+const favourite = require('./user/favourite');
+
 
 
 // ****ADMIN****
@@ -31,6 +33,8 @@ const sub_category = require('./admin/sub_category')
 rootRouter.use('/', user_auth);
 rootRouter.use('/', mint);
 rootRouter.use('/', calendar_event);
+rootRouter.use('/', favourite);
+
 
 
 // ADMIN
