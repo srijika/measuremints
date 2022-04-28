@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const localDB = "mongodb://127.0.0.1:27017/measuremints";
+// const localDB = "mongodb://127.0.0.1:27017/measuremints";
 const liveDB = "mongodb://plenum:raryFouPl1@161.97.157.111:27017/measuremints?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false";
 
 mongoose.connect(process.env.MONGODB_URI || liveDB, {

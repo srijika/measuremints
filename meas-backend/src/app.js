@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const indexRouter = require('./routes/index');
 const app = express();
+var logger = require('morgan');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
@@ -18,6 +19,8 @@ app.use(bodyParser.json({
 
 //Allow Cors
 app.use(cors());
+
+app.use(logger('dev'));
 
 //Set Static Path
 app.use(express.static(path.join(__dirname, '../public')));

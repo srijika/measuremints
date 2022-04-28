@@ -12,6 +12,7 @@ router.use(cors());
  
   // Mint API
   router.post('/api/create-calendar/event',authenticateJWT, calendarController.createCalendar);
+  router.post('/api/get-calendar/events',authenticateJWT,calendarController.getCalendar);
 
 
 
