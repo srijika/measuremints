@@ -1649,10 +1649,11 @@ module.exports = {
                     isEmailVerified: 1,
                     firebase_token: 1,
                     username: 1,
-                    userData : 1,
-                    'isConnected': {
+                    'isCount': {
                        $size : '$userData'
                     },
+                    isConnected: {$arrayElemAt: ["$userData.accept_status", 0]},
+
 
 
 
