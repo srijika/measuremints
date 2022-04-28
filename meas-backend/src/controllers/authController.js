@@ -1591,17 +1591,6 @@ module.exports = {
 
 
 
-        const myFriends = await Mint_Requests.find({
-            $or: [{
-                sender_id: user_id
-            }, {
-                reciever_id: user_id
-            }],
-            $and: [{
-                accept_status: true
-            }]
-        }).lean().exec();
-
         const UserList = await UserLogins.aggregate([
             {
                 $match: {
@@ -1622,13 +1611,22 @@ module.exports = {
                       $match: {
                         $expr: {
                           $and: [
-                            { $ne: ["$status", "PAYMENT_FAILED"] },
+                            { $eq: ["$accept_status", true] },          
+                            {$or:
+                                [ { $eq: [
+                                    "$$id", //localField variable it can be used only in $expr
+                                    "$sender_id", //foreignField
+                                  ],} ,
+                                 { $eq: [
+                                    "$$id", //localField variable it can be used only in $expr
+                                    "$reciever_id", //foreignField
+                                  ],}
 
-                            {
-                              $eq: [
-                                "$$id", //localField variable it can be used only in $expr
-                                "$trip_id", //foreignField
-                              ],
+                                ]
+                                } ,  
+                                
+                                {
+                          
                             },
                           ],
                         },
@@ -1638,6 +1636,29 @@ module.exports = {
                   as: "userData",
                 },
               },
+
+
+              {
+                $project: {
+                    username: 1,
+                    email: 1,
+                    mobile_number: 1,
+                    roles: 1,
+                    avatar: 1,
+                    dob: 1,
+                    isEmailVerified: 1,
+                    firebase_token: 1,
+                    username: 1,
+                    'userData': {
+                        $cond: {
+                            if: { $eq: ["$user_status", "deactive"] },
+                            then: "deactive",
+                            else: "active"
+                        }
+                    },
+                
+                }
+            },
       
     ]);
 
