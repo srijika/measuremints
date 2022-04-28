@@ -1601,7 +1601,6 @@ module.exports = {
       
     ]);
 
-console.log(UserList.length)
 
     res.send({ status: 200, UserList : UserList, message: `Get User List Successfully` })
 
