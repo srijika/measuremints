@@ -1605,7 +1605,6 @@ module.exports = {
                   let: {
                     id: "$_id", //All UserLogins variables,
                   },
-      
                   pipeline: [
                     {
                       $match: {
@@ -1636,8 +1635,6 @@ module.exports = {
                   as: "userData",
                 },
               },
-
-
               {
                 $project: {
                     username: 1,
@@ -1649,19 +1646,15 @@ module.exports = {
                     isEmailVerified: 1,
                     firebase_token: 1,
                     username: 1,
-                    'isCount': {
-                       $size : '$userData'
-                    },
-                    isConnected: {$arrayElemAt: ["$userData.accept_status", 0]},
-
-
-
-
-                    
-                
+                    'isConnected': {
+                        $cond: {
+                            if: {
+                                $gt : [{ $size : '$userData'},0]
+                            },then: true, else: false
+                        }
+                    }
                 }
             },
-      
     ]);
 
 

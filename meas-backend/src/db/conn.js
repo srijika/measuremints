@@ -27,5 +27,7 @@ module.exports = {
     Calendar_Event: require('../models/calendar_events'),
     Favorite: require('../models/favorites'),
     Mint_Requests: require('../models/mint_requests'),
+    Notification: require('../models/notifications'),
+
 
 };
