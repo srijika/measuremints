@@ -8,56 +8,6 @@ var mongoose = require('mongoose');
 const console = require('console');
 
 
-let testArray = [
-    
-    {
-        "category_id":"6239bd7df797e69da78dd3f6" ,
-        "subcategory_tags":[
-             {"subcategory_id":"6239bdd3f797e69da78dd416","tags":[ "8" , "9"]},
-             {"subcategory_id":"6239bde1f797e69da78dd422","tags":[]},
-             {"subcategory_id":"6239bdf0f797e69da78dd42e","tags":["L" ]}
-            ]  
-    }
-    
-    ,
-    
-     {
-        "category_id":"6239bd97f797e69da78dd3fe" ,
-        "subcategory_tags":[
-             {"subcategory_id":"6239be0df797e69da78dd43a","tags":[ "Taitnic"]},
-             {"subcategory_id":"6239be1df797e69da78dd446","tags":[ ]},
-             {"subcategory_id":"6239be30f797e69da78dd452","tags":[ ]}
-            ] 
-        
-        
-    }
-    
-    ,
-    
-     {
-        "category_id":"6239bdaef797e69da78dd405" ,
-        "subcategory_tags":[
-             {"subcategory_id":"6239be44f797e69da78dd45e","tags":[]}
-            ] 
-        
-        
-    } 
-    
-    ,
-    
-     {
-        "category_id":"6239bdb5f797e69da78dd40c" ,
-        "subcategory_tags":[
-             {"subcategory_id":"6239be4df797e69da78dd46a","tags":[ ]}
-           
-            ] 
-        
-        
-    }
-
-
-]
-
 
 
 
@@ -242,6 +192,73 @@ const data = {
     },
 
     getUserMint: async(req, res, next) => {
+        try {
+            const { username_id  } = req.body;
+            if ( !username_id ) {
+                res.send({ status: 400, message: "Required Parameter is missing" });
+                return;
+            }
+    
+            let mints = await Mint.find({username_id}).lean().exec();
+           let myMint = await Promise.all( mints &&  mints.map(async (val) =>{
+                let subcategory = []
+                // let attribute = await Attribute.find({username_id : val.username_id })
+                let condition = { "username_id" : val.username_id  };
+                let attribute = await Attribute.aggregate([
+                    { $match: condition },
+                    { $lookup: { from: 'sub_categories', localField: 'subcategory_id', foreignField: '_id', as: 'subcategoryInfo' } },
+                    { $unwind: { path: '$subcategoryInfo', preserveNullAndEmptyArrays: true } }, 
+                    {
+                        $project: {
+                                        "_id": 0,
+                                        username_id: 1,
+                                        'subcategory_name': "$subcategoryInfo.name",
+                                        subcategory_id: 1,
+                                        attribute: 1,
+                                        created_at: 1,    
+                
+                        }
+                    },
+                ]).exec();
+
+                if(attribute.length !== 0){
+                    subcategory = attribute
+                }
+
+               val.subcategory = subcategory
+              
+             return val
+                
+
+            }));
+           
+
+
+            if(myMint.length !== 0 ){
+                res.send({
+                    status: 200,
+                    myMint: myMint[0],
+                    message: "My Mint get sucessfully",
+    
+                  
+                });
+            }else{
+                res.send({
+                    status: 200,
+                    myMint: {},
+                    message: "no found",
+    
+                  
+                });
+            }
+           
+             
+        } catch (e) {
+            res.send({ status: 400, message: e.message })
+        }
+        
+    },
+    getUserMintCopy: async(req, res, next) => {
         try {
             const { username_id  } = req.body;
             if ( !username_id ) {

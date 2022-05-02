@@ -52,7 +52,10 @@ const schema = new Schema({
         type: Number,
         default: 0
     },
-
+    isNotification: {
+        type: Boolean,
+        default: true
+      },
 
 
 

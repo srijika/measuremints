@@ -6,7 +6,6 @@ const schema = new Schema({
     dob: { type: String, },
     relation:{ type: String},
     media: { type: String },
-    // subcategory_tags: { type: Array,  },
     user_id: { type: Schema.ObjectId },
 
 

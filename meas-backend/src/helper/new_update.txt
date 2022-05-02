@@ -16,3 +16,17 @@ cd web/measuremints.plenumnetworks.com/public_html
 
 
 
+
+1.Calender -add events ✅
+
+2.Timelines--recents,  favorites ✅
+3.Privacy Policy-pages, ✅
+4.terms--pages ✅ 
+5.About--pages ✅
+6.All users list ✅
+7.request mints ✅
+8.profile 
+9.send gift notification ✅
+10.suggestion ✅
+
+User Notification list  ✅

@@ -7,6 +7,7 @@ const schema = new Schema({
     accept_status: { type: Boolean, default: false },
     send_date: { type: Date,  default: new Date() },
     accepted_date: { type: Date },
+    subcategosubcategory_attribtery_tags: { type: Array,  },
  
    
 }, {

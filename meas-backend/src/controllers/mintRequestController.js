@@ -6,6 +6,8 @@ const {
 } = require('../helper/firebase/firebase');
 const mints = require('../models/mints');
 const { promises } = require('nodemailer/lib/xoauth2');
+const addNotification = require('../helper/addNotification');
+
 
 
 module.exports = {
@@ -13,8 +15,13 @@ module.exports = {
         try {
             const {
                 sender_id,
-                reciever_id
+                reciever_id ,
+                subcategory_attribte
             } = req.body;
+            console.log(typeof(reciever_id))
+
+            let subcategory_tags =JSON.parse(subcategory_attribte)
+
 
             const d = new Date();
 
@@ -33,7 +40,8 @@ module.exports = {
                 sender_id: sender_id,
                 reciever_id: reciever_id,
                 send_date: d,
-                accepted_date: null
+                accepted_date: null,
+                subcategory_attribte: subcategory_tags,
 
             };
 
@@ -64,14 +72,21 @@ module.exports = {
                 });
             }
 
-            if(recieverInfo.isNotification === true){
-            
-            let ff =  await sendMintRequestNotification("207", `${senderInfo.username} send a Mint request on Measuremints app.`, firebase_token);
-            console.log("ff" , ff)
 
-            }
-         
             const MintRequestCreate = await (new Mint_Requests(data)).save();
+
+            let message = `${senderInfo.username} send a mint request.`;
+            let notification_type = 'request'
+            let media = recieverInfo.avatar
+            // normal  notification
+            await addNotification(recieverInfo._id , message , notification_type ,media);
+            if(recieverInfo.isNotification === true){
+            // firebase  notification
+            await sendMintRequestNotification("207", `${senderInfo.username} send a mint request.`, firebase_token);
+                
+                }
+             
+
             return res.send({
                 status: 200,
                 message: 'Mint Request sent successfully'
@@ -113,10 +128,8 @@ module.exports = {
                     status: 400,
                     message: "Accept Status is required"
                 });
-            console.log("if condiotion--", accept_status, accept_status === true);
 
             // if request accepted
-            console
             if (accept_status == 'true') {
 
                 Mint_Requests.findOne({
@@ -136,9 +149,17 @@ module.exports = {
                     });
 
                     let firebase_token = requesterInfo.firebase_token;
+                    let message = `${accepterInfo.username} accept your mint request.`;
+                    let notification_type = 'accept'
+                    let media = accepterInfo.avatar
+                    // normal  notification
+                    await addNotification(requesterInfo._id , message , notification_type ,media);
                     if(requesterInfo.isNotification === true){
-                        let result = await sendMintRequestNotification("207", `${accepterInfo.username} accept your Mint request`, firebase_token);
-                    }
+                    // firebase  notification
+                    await sendMintRequestNotification("207", `${accepterInfo.username} send a mint request.`, firebase_token);
+                        
+                        }
+
 
 
                     Mint_Requests.updateOne({
@@ -223,14 +244,7 @@ module.exports = {
                 }
 
             );
-            // const mypractice = await UserLogins.aggregate([{
-            //     $lookup: {
-            //         from: "mints",
-            //         localField: "_id",
-            //         foreignField: "username_id"
-            //     }
-            // }])
-            // console.log(mypractice)
+
 
             const userList = await UserLogins.find({
                 '_id': {
@@ -250,9 +264,76 @@ module.exports = {
                 status: 400,
                 message: error.message
             })
-        }
+        }  
     },
 
+    // myAllMintsFriend: async (req, res, next) => {
+
+    //     try {
+
+    //         const {
+    //             user_id,
+    //         } = req.body;
+
+    //         const d = new Date();
+    //         // validation 
+    //         if (!user_id)
+    //             return res.send({
+    //                 status: 400,
+    //                 message: "User Id is required"
+    //             });
+
+    //         const myFriends = await Mint_Requests.find({
+    //             $or: [{
+    //                 sender_id: user_id
+    //             }, {
+    //                 reciever_id: user_id
+    //             }],
+    //             $and: [{
+    //                 accept_status: true
+    //             }]
+    //         }).lean().exec();
+
+    //         const myFriendsList = [];
+    //         myFriends.map(async (item) => {
+    //                 myFriendsList.push(item.reciever_id);
+    //             }
+    //         );
+    //         myFriends.map(async (item) => {
+    //                 myFriendsList.push(item.sender_id);
+    //             }
+    //         );
+    //         let filterFriend = myFriendsList.filter((val) => {
+    //             return val != user_id
+    //         })
+
+    //         const userList = await UserLogins.find({
+    //             '_id': {
+    //                 $in: filterFriend
+    //             }
+    //         });
+
+    //         var filterByNames = userList.sort((a, b) => a.username.localeCompare(b.username))
+    //         var friendsData = filterByNames.map(v=>{
+    //             return {
+    //                 name: v.username,
+    //                 id: v._id
+    //             }
+    //         })
+    //         return res.send({
+    //             status: 200,
+    //             myAllFriends: filterByNames,
+    //             friendsName: friendsData
+    //         });
+
+    //     } catch (error) {
+
+    //         return res.send({
+    //             status: 400,
+    //             message: error.message
+    //         })
+    //     }
+    // },
     myAllMintsFriend: async (req, res, next) => {
 
         try {

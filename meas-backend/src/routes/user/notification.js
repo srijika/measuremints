@@ -10,9 +10,12 @@ const cors = require('cors')
 router.use(cors());
  
   // NOTIFICATION API
-  router.post('/api/add/favorite',authenticateJWT , notificationController.addNotification);
+  router.post('/api/add/notification',authenticateJWT , notificationController.addNotification);
   router.post('/api/remove/notification',authenticateJWT , notificationController.removeNotification);
   router.post('/api/get/my/notification',authenticateJWT , notificationController.getMyNotification);
+  router.post('/api/get/my/unread-notification',authenticateJWT , notificationController.getMyUnreadNotification);
+  
+
 
 
 

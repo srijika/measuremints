@@ -104,13 +104,13 @@ module.exports = {
               return res.send({ status: 400, message: 'slug is required' });
           }
 
-          const Page = await Page.findOne({slug: slug}).lean().exec();
+          const SinglePage = await Page.findOne({slug: slug}).lean().exec();
 
-          if (!Page) {
+          if (!SinglePage) {
               return res.send({ status: 400, message: 'Page not fount for this slug' });
           }
-console.log("Page" ,Page)
-          return res.send({ status: 200, data: Page, message: slug+' get successfully' });
+console.log("Page" ,SinglePage)
+          return res.send({ status: 200, data: SinglePage, message: slug+' get successfully' });
 
       } catch (error) {
           return res.send({ status: 400, message: error.message });

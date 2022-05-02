@@ -8,9 +8,10 @@ const user_auth = require('./user/auth');
 const mint = require('./user/mint');
 const calendar_event = require('./user/calendar_event');
 const favourite = require('./user/favourite');
-const mint_request = require('./user/mint_request')
 const notification = require('./user/notification')
-
+const mint_request = require('./user/mint_request');
+const gifts = require('./user/gift');
+const suggestions = require('./user/suggestions');
 
 
 // ****ADMIN****
@@ -41,6 +42,8 @@ rootRouter.use('/', mint_request);
 
 
 
+rootRouter.use('/', gifts);
+rootRouter.use('/', suggestions);
 
 
 // ADMIN
@@ -51,6 +54,7 @@ rootRouter.use('/', setting);
 rootRouter.use('/', page);
 rootRouter.use('/', category);
 rootRouter.use('/', sub_category);
+
 
 
 

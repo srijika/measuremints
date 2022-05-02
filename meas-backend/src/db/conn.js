@@ -28,6 +28,7 @@ module.exports = {
     Favorite: require('../models/favorites'),
     Mint_Requests: require('../models/mint_requests'),
     Notification: require('../models/notifications'),
-
+    Gifts: require('../models/gifts'),
+    Sugggestions: require('../models/suggestions')
 
 };

@@ -5,7 +5,11 @@ const schema = new Schema({
     user_id: { type: Schema.ObjectId },
     message: { type: String, required: true },
     notification_type: { type: String, default: 'user' },
-    status: { type: Number, default: 0 }, // 0 for unread 1 for read
+    status: { type: Number, default: 0 },
+    media: {
+        type: String,
+        default: null
+    }, 
 },
 {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
